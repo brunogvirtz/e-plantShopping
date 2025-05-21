@@ -9,6 +9,13 @@ function ProductList({ onHomeClick }) {
     const [showCart, setShowCart] = useState(false);
     const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
     const [addedToCart, setAddedToCart ] = useState({}); 
+    useEffect(() => {
+        const newAddedToCart = {};
+        cart.forEach(item => {
+            newAddedToCart[item.name] = true;
+        });
+        setAddedToCart(newAddedToCart);
+    }, [cart]);
 
 
     const plantsArray = [
@@ -238,6 +245,10 @@ function ProductList({ onHomeClick }) {
         fontSize: '30px',
         textDecoration: 'none',
     }
+    const styleCatTitle = {
+        textAlign: 'center',
+        paddingTop: '40px',
+    }
 
     const handleAddToCart = (product) => {
         dispatch(addItem(product));
@@ -300,7 +311,7 @@ function ProductList({ onHomeClick }) {
                     {plantsArray.map((category, index) => (
                         <div key={index}>
                             <h1>
-                                <div>{category.category}</div>
+                                <div style={styleCatTitle}>{category.category}</div>
                             </h1>
                             <div className="product-list">
                                 {category.plants.map((plant, plantIndex) => (
@@ -309,7 +320,7 @@ function ProductList({ onHomeClick }) {
                                         <div className='product-title'>{plant.name}</div>
                                         <div className='product-description'>{plant.description}</div>
                                         <div className='product-price'>{plant.cost}</div>
-                                        <button  className={`product-button ${addedToCart[plant.name] ? 'added-to-cart': ''}`} onClick={() => handleAddToCart(plant)} disabled={addedToCart[plant.name]}>Add to Cart</button>
+                                        <button  className={`product-button ${addedToCart[plant.name] ? 'added-to-cart' : ''}`} onClick={() => handleAddToCart(plant)} disabled={addedToCart[plant.name]}>{addedToCart[plant.name] ? 'Added to Cart' : 'Add to Cart'}</button>
                                     </div>    
                                 ))}
                             </div> 
